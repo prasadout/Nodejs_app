@@ -8,12 +8,12 @@ node {
 
     stage('Build image') {
         
-        app = docker.build("nani1010/helloworld")
+        app = docker.build("nani1011/helloworld")
     }
 
 
     stage('Push image') {
-        docker.withRegistry('nani1010/nani', 'docker-hub') {
+        docker.withRegistry('https://hub.docker.com/repository/docker/nani1010/nani', 'docker-hub') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
         }
