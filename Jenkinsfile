@@ -17,9 +17,6 @@ node {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
         }
-    stage(run latest docker image) {
-        sh docker run -itd nani1010/helloworld:"${env.BUILD_NUMBER}"
-    }
 
     }
 }
