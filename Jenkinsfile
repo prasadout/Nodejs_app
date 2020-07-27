@@ -1,6 +1,6 @@
 	pipeline {
 	environment {
-		registry = "https://hub.docker.com/repository/docker/nani1010/nani"
+		registry = "nani1010/nani"
 		registryCredential = 'docker-hub'
 		dockerImage = ''
 	}
