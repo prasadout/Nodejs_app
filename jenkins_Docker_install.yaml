@@ -1,0 +1,64 @@
+---
+- hosts: all
+  gather_facts: yes
+  remote_user: mp_task 
+  become: true
+  
+  tasks:
+
+    - name: APT Update
+      command: apt update
+
+    - name: Install Java
+      command: apt install -y openjdk-8-jdk
+
+    - name: Install key for the Jenkins apt repository
+      apt_key:
+        url: "https://pkg.jenkins.io/debian/jenkins-ci.org.key"
+        state: present
+
+    - name: Install access to the Jenkins apt repository
+      apt_repository:
+        repo: deb http://pkg.jenkins.io/debian-stable binary/
+        state: present
+        filename: 'jenkins-stable'
+
+    - name: APT Update for the Jenkins repository
+      command: apt update
+
+    - name: Install Jenkins package
+      apt:
+        name: jenkins
+        state: installed
+    
+    - name: Change Port number in file
+      lineinfile:
+        path: /etc/default/jenkins
+        state: present
+        regexp: "^HTTP_PORT"
+        line: "HTTP_PORT=36598"         
+
+    - name: Wait for Jenkins to start up
+      wait_for: timeout=35
+
+    - name: start jenkin service
+      systemd:
+        name: jenkins
+        state: restarted
+    - name: enable jenkins
+      systemd:
+        name: jenkins
+        enabled: true
+
+    - name: Docker install 
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: ensure docker registry is available
+      apt_repository: repo='deb https://download.docker.com/linux/ubuntu bionic stable' state=present
+
+    - name: ensure docker and dependencies are installed
+      apt: name=docker-ce update_cache=yes
+
+
