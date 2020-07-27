@@ -26,11 +26,6 @@ stage('Deploy our image') {
 				dockerImage.push()
 				}
 				}
-stage ('run latest docker image'){
-	steps{
-		sh docker run -it registry + ":$BUILD_NUMBER"
-		}
-	}
 }
 				}
 			}
