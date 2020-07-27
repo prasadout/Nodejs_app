@@ -1,23 +1,31 @@
-node {
-    def app
-
-    stage('Clone repository') {
-        
-        checkout scm
-    }
-
-    stage('Build image') {
-        
-        app = docker.build("nani1011/helloworld")
-    }
-
-
-    stage('Push image') {
-        docker.withRegistry('nani1010/nani', 'docker-hub') {
-            app.push("${env.BUILD_NUMBER}")
-            app.push("latest")
-        }
-
-    }
+pipeline {
+environment {
+registry = "https://hub.docker.com/repository/docker/nani1010/nani"
+registryCredential = 'docker-hub'
+dockerImage = ''
 }
-
+agent any
+stages {
+stage('Cloning our Git') {
+steps {
+git 'https://github.com/prasadout/Nodejs_app.git'
+}
+}
+stage('Building our image') {
+steps{
+script {
+dockerImage = docker.build registry + ":$BUILD_NUMBER"
+}
+}
+}
+stage('Deploy our image') {
+steps{
+script {
+docker.withRegistry( '', registryCredential ) {
+dockerImage.push()
+}
+}
+}
+}
+}
+}
