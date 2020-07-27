@@ -29,7 +29,7 @@
 					}
 					}
 				}
-	statge ('Stop previous image'){
+	stage ('Stop previous image'){
 		steps{
 			sh 'docker stop nani1010/nani+":$BUILD_NUMBER"-1'
 		}
