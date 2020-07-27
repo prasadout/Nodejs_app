@@ -13,7 +13,7 @@ node {
 
 
     stage('Push image') {
-        docker.withRegistry('https://hub.docker.com/repository/docker/nani1010/nani', 'docker-hub') {
+        docker.withRegistry('https://hub.docker.com/', 'docker-hub') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
         }
