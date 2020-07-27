@@ -31,7 +31,7 @@
 				}
 	stage ('Run latest image'){	
 		steps{
-			sh 'docker run -itd -p80:3000 nani1010/nani+":$BUILD_NUMBER" '
+			sh 'docker run -itd -p80:3000 nani1010/nani":$BUILD_NUMBER" '
 		}
 	}
 	}
