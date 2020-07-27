@@ -1,31 +1,38 @@
 pipeline {
 environment {
-registry = "nani1010/nani"
-registryCredential = 'docker-hub'
-dockerImage = ''
+	registry = "https://hub.docker.com/repository/docker/nani1010/nani"
+	registryCredential = 'docker-hub'
+	dockerImage = ''
 }
+
 agent any
 stages {
-stage('Cloning our Git') {
-steps {
-git 'https://github.com/prasadout/Nodejs_app.git'
-}
-}
+	stage('Cloning our Git') {
+		steps {
+			git 'https://github.com/prasadout/Nodejs_app.git'
+			}
+		}
 stage('Building our image') {
-steps{
-script {
-dockerImage = docker.build registry + ":$BUILD_NUMBER"
-}
-}
-}
+	steps{
+		script {
+			dockerImage = docker.build registry + ":$BUILD_NUMBER"
+			}
+			}
+		}
 stage('Deploy our image') {
-steps{
-script {
-docker.withRegistry( '', registryCredential ) {
-dockerImage.push()
+	steps{
+		script {
+			docker.withRegistry( '', registryCredential ) {
+				dockerImage.push()
+				}
+				}
+stage ('run latest docker image'){
+	steps{
+		sh docker run -it registry + ":$BUILD_NUMBER"
+		}
+	}
 }
-}
-}
-}
+				}
+			}
 }
 }
