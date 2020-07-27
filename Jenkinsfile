@@ -31,7 +31,7 @@
 				}
 	stage ('Stop previous image'){
 		steps{
-			sh 'docker stop nani1010/nani":$BUILD_NUMBER"-1'
+			sh 'docker stop `docker ps -aqf "name=silly_haibt"`'
 		}
 	}
 	stage ('Run latest image'){	
